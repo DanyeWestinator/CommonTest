@@ -94,6 +94,10 @@ MonoBehaviour:
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
   compressRotation: 1
+  interpolateScale: 1
+  interpolateRotation: 1
+  interpolatePosition: 1
+  syncScale: 1
 --- !u!195 &6900008319038825817
 NavMeshAgent:
   m_ObjectHideFlags: 0
