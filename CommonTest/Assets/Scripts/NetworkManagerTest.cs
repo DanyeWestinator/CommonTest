@@ -21,6 +21,7 @@ public class NetworkManagerTest : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         Transform start = GetStartPosition();
+
         while (usedStarts.Contains(start) == true)
         {
             start = GetStartPosition();
