@@ -57,7 +57,6 @@ public class DanePlayerController : NetworkBehaviour
         print("set color via command");
     }
 
-    
     [Command]
     private void CmdSpawnCube(Vector3 pos, Color c)
     {
