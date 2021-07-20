@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
@@ -18,7 +19,9 @@ public class DanePlayerController : NetworkBehaviour
 
     static NetworkManagerTest nm;
 
-    private MeshRenderer meshRenderer;
+    private List<SkinnedMeshRenderer> meshRenderers = new List<SkinnedMeshRenderer>();
+
+    [SerializeField] private Animator _animator = null;
 
     public override void OnStartClient()
     {
@@ -36,13 +39,12 @@ public class DanePlayerController : NetworkBehaviour
 
     void SyncColor(Color old, Color newColor)
     {
-        if (meshRenderer == null)
+        if (!meshRenderers.Any())
         {
-            meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>());
         }
         print("set color via hook");
-        meshRenderer.material.color = newColor;
-        //GetComponentInChildren<Text>().text = $"";
+        meshRenderers.ForEach(mr=> mr.material.color = newColor);
     }
 
     [Command]
@@ -66,24 +68,34 @@ public class DanePlayerController : NetworkBehaviour
 
     private void OnDestroy()
     {
-        Destroy(meshRenderer);
+        meshRenderers.ForEach(Destroy);
     }
     private void Update()
     {
-        if (isLocalPlayer)
+        if (!isLocalPlayer) return;
+        
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+            
+        var movement = new Vector3(x, 0f, y).normalized;
+            
+        transform.position += movement * speed * Time.deltaTime;
+
+        if (movement.magnitude >= .2f)
         {
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            transform.position += (new Vector3(x, 0f, y) * speed * Time.deltaTime);
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                Color c = colors[Random.Range(0, colors.Count)];
-                CmdSetColor(c);
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                CmdSpawnCube(transform.position, currentColor);
-            }
+            transform.rotation = Quaternion.LookRotation(movement);
+        }
+            
+        _animator.SetBool("isWalking", movement.magnitude >= .2f);
+            
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Color c = colors[Random.Range(0, colors.Count)];
+            CmdSetColor(c);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CmdSpawnCube(transform.position, currentColor);
         }
     }
 }
