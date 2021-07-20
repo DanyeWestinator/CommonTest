@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Mirror;
@@ -9,19 +8,18 @@ public class DanePlayerController : NetworkBehaviour
 {
     public float speed = 5f;
     public List<Color> colors = new List<Color>();
-    [SyncVar(hook = nameof(SyncColor))]
-    Color color;
+    [SyncVar(hook = nameof(SyncColor))] private Color color;
 
     public Color currentColor => color;
 
-    [SyncVar]
-    int playerNum;
+    [SyncVar] private int playerNum;
 
-    static NetworkManagerTest nm;
+    private static NetworkManagerTest nm;
 
     private List<SkinnedMeshRenderer> meshRenderers = new List<SkinnedMeshRenderer>();
 
     [SerializeField] private Animator _animator = null;
+    [SerializeField] private GameObject model = null;
 
     public override void OnStartClient()
     {
@@ -31,24 +29,29 @@ public class DanePlayerController : NetworkBehaviour
         if (isLocalPlayer)
         {
             playerNum = nm.numPlayers;
+            foreach (Transform child in model.transform)
+            {
+                child.gameObject.SetActive(false);
+            }
         }
+        
         color = colors[Random.Range(0, colors.Count)];
         gameObject.name = $"Player {playerNum}";
         GetComponentInChildren<Text>().text = gameObject.name;
     }
 
-    void SyncColor(Color old, Color newColor)
+    private void SyncColor(Color old, Color newColor)
     {
         if (!meshRenderers.Any())
         {
-            meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>());
+            meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
         }
         print("set color via hook");
         meshRenderers.ForEach(mr=> mr.material.color = newColor);
     }
 
     [Command]
-    void CmdSetColor(Color c)
+    private void CmdSetColor(Color c)
     {
         color = c;
         print("set color via command");
@@ -56,10 +59,10 @@ public class DanePlayerController : NetworkBehaviour
 
     
     [Command]
-    void CmdSpawnCube(Vector3 pos, Color c)
+    private void CmdSpawnCube(Vector3 pos, Color c)
     {
-        GameObject cubePrefab = nm.spawnPrefabs.Find(go => go.name == "Cube");
-        GameObject cube = Instantiate(cubePrefab);
+        var cubePrefab = nm.spawnPrefabs.Find(go => go.name == "Cube");
+        var cube = Instantiate(cubePrefab);
         pos.y = 0f;
         cube.transform.position = pos;
         cube.GetComponent<Cube>().color = currentColor;
@@ -74,8 +77,8 @@ public class DanePlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
         
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+        var x = Input.GetAxis("Horizontal");
+        var y = Input.GetAxis("Vertical");
             
         var movement = new Vector3(x, 0f, y).normalized;
             
@@ -90,7 +93,7 @@ public class DanePlayerController : NetworkBehaviour
             
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Color c = colors[Random.Range(0, colors.Count)];
+            var c = colors[Random.Range(0, colors.Count)];
             CmdSetColor(c);
         }
         if (Input.GetKeyDown(KeyCode.Space))

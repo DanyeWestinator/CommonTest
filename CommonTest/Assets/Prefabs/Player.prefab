@@ -100,7 +100,8 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 1, a: 1}
   - {r: 1, g: 1, b: 0, a: 1}
   - {r: 0, g: 1, b: 1, a: 1}
-  _animator: {fileID: 7081283853472485815}
+  _animator: {fileID: 5875310055614610784}
+  model: {fileID: 6867235046704037316}
 --- !u!136 &2019699814950526383
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -146,7 +147,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  animator: {fileID: 7081283853472485815}
+  animator: {fileID: 5875310055614610784}
 --- !u!1 &489461817062640487
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +325,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!95 &7081283853472485815
+--- !u!95 &5875310055614610784
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
