@@ -5,8 +5,11 @@ using Mirror;
 
 public class Cube : NetworkBehaviour
 {
+    [HideInInspector]
     public Color color = Color.clear;
+
     private MeshRenderer mr;
+
     [SyncVar(hook = nameof(SyncColor))]
     private Color _color;
 
