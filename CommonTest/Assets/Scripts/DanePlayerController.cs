@@ -33,11 +33,21 @@ public class DanePlayerController : NetworkBehaviour
             {
                 child.gameObject.SetActive(false);
             }
+            
+            Camera.main.gameObject.SetActive(false);
+        }
+        else
+        {
+            var cam = GetComponentInChildren<Camera>();
+            if (cam)
+            {
+                Destroy(cam);
+            }
         }
         
         color = colors[Random.Range(0, colors.Count)];
         gameObject.name = $"Player {playerNum}";
-        GetComponentInChildren<Text>().text = gameObject.name;
+        //GetComponentInChildren<Text>().text = gameObject.name;
     }
 
     private void SyncColor(Color old, Color newColor)
@@ -80,15 +90,10 @@ public class DanePlayerController : NetworkBehaviour
         var y = Input.GetAxis("Vertical");
             
         var movement = new Vector3(x, 0f, y).normalized;
-            
-        transform.position += movement * speed * Time.deltaTime;
-
-        if (movement.magnitude >= .2f)
-        {
-            transform.rotation = Quaternion.LookRotation(movement);
-        }
-            
-        _animator.SetBool("isWalking", movement.magnitude >= .2f);
+        
+        var velocityMagnitude = GetComponent<CharacterController>().velocity.magnitude;
+        //Debug.Log($"velocity: {velocityMagnitude}");
+        //_animator.SetBool("isWalking", velocityMagnitude >= .2f);
             
         if (Input.GetKeyDown(KeyCode.Tab))
         {
