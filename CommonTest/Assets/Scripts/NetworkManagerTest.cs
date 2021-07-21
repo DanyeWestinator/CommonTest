@@ -24,7 +24,7 @@ public class NetworkManagerTest : NetworkManager
     private new void Awake()
     {
         instance = this;
-
+        print("instance is this");
         //KCP variables
         NetworkManagerHUD hud = GetComponent<NetworkManagerHUD>();
         KcpTransport kcp = GetComponent<KcpTransport>();
