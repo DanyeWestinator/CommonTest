@@ -21,6 +21,7 @@ public class DanePlayerController : NetworkBehaviour
     [SerializeField] private Animator _animator = null;
     [SerializeField] private GameObject model = null;
 
+
     public override void OnStartClient()
     {
         if (nm == null)
@@ -97,12 +98,12 @@ public class DanePlayerController : NetworkBehaviour
             
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            var c = colors[Random.Range(0, colors.Count)];
-            CmdSetColor(c);
+            //var c = colors[Random.Range(0, colors.Count)];
+            //CmdSetColor(c);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            CmdSpawnCube(transform.position, currentColor);
+            //CmdSpawnCube(transform.position, currentColor);
         }
     }
 }
