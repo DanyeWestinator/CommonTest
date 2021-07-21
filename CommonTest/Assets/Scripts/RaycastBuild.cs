@@ -15,7 +15,7 @@ public class RaycastBuild : NetworkBehaviour
     public Transform crosshair;
     
     private RaycastHit hit;
-    public SpriteRenderer colorGUI;
+    public Image colorGUI;
 
     private List<Color> colors;
     private int colorIndex = 0;
@@ -47,6 +47,10 @@ public class RaycastBuild : NetworkBehaviour
         {
             CastRay();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            CastRay(true);
+        }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             NextColor();
@@ -63,19 +67,31 @@ public class RaycastBuild : NetworkBehaviour
 
     }
 
+    /// <summary>
+    /// Spawns the cube on the server side
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="c"></param>
     [Command]
     void CmdSpawnCube(Vector3 pos, Color c)
     {
+        pos = Vector3Int.RoundToInt(pos);
         cubePrefab = nm.spawnPrefabs.Find(x => x.name == "Cube");
         GameObject go = Instantiate(cubePrefab, pos, Quaternion.identity);
         go.GetComponent<Cube>().color = c;
         go.transform.parent = cubeParent;
-        go.name = $"CUBE {pos}";
+        go.name = $"Cube {pos}";
 
         NetworkServer.Spawn(go);
 
         if (timedDestroy)
             Destroy(go, destroyTime);
+    }
+
+    [Command]
+    void CmdDeleteCube(GameObject cube)
+    {
+        NetworkServer.Destroy(cube);
     }
 
     /// <summary>
@@ -93,6 +109,7 @@ public class RaycastBuild : NetworkBehaviour
                 return;
             Vector3 pos = hit.point;
             pos.y += 0.5f;
+            //pos = Vector3Int.RoundToInt(pos);
             crosshair.position = pos;
             crosshair.eulerAngles = hit.normal;
         }
@@ -105,7 +122,7 @@ public class RaycastBuild : NetworkBehaviour
     /// <summary>
     /// checks if the raycast is valid, then spawns a cube
     /// </summary>
-    void CastRay()
+    void CastRay(bool destroy = false)
     {
         //RaycastHit hit;
         //if (Physics.Raycast(transform.position, transform.forward, out hit))
@@ -119,18 +136,11 @@ public class RaycastBuild : NetworkBehaviour
             }
             Vector3 cubePos = hit.point;
             cubePos.y += 0.5f;
-            CmdSpawnCube(cubePos, cubeColor);
-            /*
-            GameObject go = Instantiate(cubePrefab, cubePos, Quaternion.identity);
-            go.GetComponent<Cube>().color = cubeColor;
-            go.transform.parent = cubeParent;
-            go.name = $"Cube {cubePos}";
-            //go.transform.position = cubePos;
-            if (timedDestroy)
-                Destroy(go, destroyTime);
-            Debug.DrawRay(transform.position, transform.forward, Color.red);
-            //Debug.Break();
-            */
+            if (destroy == false)
+                CmdSpawnCube(cubePos, cubeColor);
+            else if (destroy && name.StartsWith("Cube"))
+                CmdDeleteCube(this.hit.transform.gameObject);
+            
         }
     }
 }

@@ -98,8 +98,8 @@ public class DanePlayerController : NetworkBehaviour
             
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            var c = colors[Random.Range(0, colors.Count)];
-            CmdSetColor(c);
+            //var c = colors[Random.Range(0, colors.Count)];
+            //CmdSetColor(c);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
