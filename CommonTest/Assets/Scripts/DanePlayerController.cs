@@ -44,10 +44,14 @@ public class DanePlayerController : NetworkBehaviour
             {
                 Destroy(cam);
             }
+            Destroy(GetComponentInChildren<AudioListener>());
+            Canvas canvas = GetComponentInChildren<Canvas>();
+            Destroy(canvas);
         }
         
         color = colors[Random.Range(0, colors.Count)];
         gameObject.name = $"Player {playerNum}";
+        GetComponentInChildren<Text>().text = gameObject.name;
         //GetComponentInChildren<Text>().text = gameObject.name;
     }
 
@@ -57,7 +61,6 @@ public class DanePlayerController : NetworkBehaviour
         {
             meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
         }
-        print("set color via hook");
         meshRenderers.ForEach(mr=> mr.material.color = newColor);
     }
 
@@ -65,7 +68,6 @@ public class DanePlayerController : NetworkBehaviour
     private void CmdSetColor(Color c)
     {
         color = c;
-        print("set color via command");
     }
 
     [Command]
@@ -105,5 +107,6 @@ public class DanePlayerController : NetworkBehaviour
         {
             //CmdSpawnCube(transform.position, currentColor);
         }
+        
     }
 }

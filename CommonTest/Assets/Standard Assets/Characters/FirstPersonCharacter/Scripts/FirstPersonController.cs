@@ -85,6 +85,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+            
         }
 
 
@@ -139,6 +140,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
 
             m_MouseLook.UpdateCursorLock();
+            if (transform.position.y < -20f)
+            {
+                transform.root.position = new Vector3(0f, 12f, 0f);
+            }
         }
 
 

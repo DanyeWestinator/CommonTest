@@ -21,6 +21,10 @@ public class RaycastBuild : NetworkBehaviour
     private int colorIndex = 0;
 
     private static NetworkManagerTest nm;
+
+    
+    HashSet<Vector3> positions = new HashSet<Vector3>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +39,10 @@ public class RaycastBuild : NetworkBehaviour
         }
         colors = GetComponent<DanePlayerController>().colors;
         colorGUI.color = cubeColor;
+        if (isLocalPlayer == false)
+        {
+            crosshair.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -76,6 +84,8 @@ public class RaycastBuild : NetworkBehaviour
     void CmdSpawnCube(Vector3 pos, Color c)
     {
         pos = Vector3Int.RoundToInt(pos);
+        if (positions.Contains(pos))
+            return;
         cubePrefab = nm.spawnPrefabs.Find(x => x.name == "Cube");
         GameObject go = Instantiate(cubePrefab, pos, Quaternion.identity);
         go.GetComponent<Cube>().color = c;
@@ -83,6 +93,7 @@ public class RaycastBuild : NetworkBehaviour
         go.name = $"Cube {pos}";
 
         NetworkServer.Spawn(go);
+        positions.Add(pos);
 
         if (timedDestroy)
             Destroy(go, destroyTime);

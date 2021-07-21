@@ -1,6 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using Mirror.FizzySteam;
+using kcp2k;
+
+public enum TransportType
+{
+    kcp,
+    steam
+}
 
 public class NetworkManagerTest : NetworkManager
 {
@@ -9,6 +17,40 @@ public class NetworkManagerTest : NetworkManager
     public List<Material> colors = new List<Material>();
     Dictionary<GameObject, Material> players = new Dictionary<GameObject, Material>();
     public static NetworkManagerTest instance;
+
+    public TransportType transportType;
+
+    private new void Awake()
+    {
+        
+        //KCP variables
+        NetworkManagerHUD hud = GetComponent<NetworkManagerHUD>();
+        KcpTransport kcp = GetComponent<KcpTransport>();
+
+        //steamworks variables
+        SteamManager sm = GetComponent<SteamManager>();
+        SteamLobby lobby = GetComponent<SteamLobby>();
+        FizzySteamworks fizzy = GetComponent<FizzySteamworks>();
+
+        bool steam = (transportType == TransportType.steam);
+
+        //set the kcp to the inverse of steam
+        hud.enabled = !steam;
+        kcp.enabled = !steam;
+
+        sm.enabled = steam;
+        lobby.enabled = steam;
+        fizzy.enabled = steam;
+
+        //disables the steam button if using KCP
+        GetComponentInChildren<Canvas>().gameObject.SetActive(steam);
+        if (steam)
+            transport = fizzy;
+        else
+            transport = kcp;
+        base.Awake();
+
+    }
     private new void Start()
     {
         base.Start();
