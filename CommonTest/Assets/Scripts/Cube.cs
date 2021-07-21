@@ -21,16 +21,17 @@ public class Cube : NetworkBehaviour
 
     IEnumerator SetColor()
     {
+        int frames = 0;
         while (true)
         {
             if (color == Color.clear)
             {
                 yield return new WaitForEndOfFrame();
+                frames++;
             }
             else
             {
                 _color = color;
-                print("set color via coroutine");
                 break;
             }
         }
@@ -40,13 +41,11 @@ public class Cube : NetworkBehaviour
         if (mr == null)
             mr = GetComponent<MeshRenderer>();
         mr.material.color = c;
-        print("set cube color via hook");
     }
 
     [Command]
     public void CmdSetColor(Color c)
     {
         _color = c;
-        print("set cube color via command");
     }
 }

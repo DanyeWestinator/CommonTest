@@ -18,11 +18,13 @@ public class NetworkManagerTest : NetworkManager
     Dictionary<GameObject, Material> players = new Dictionary<GameObject, Material>();
     public static NetworkManagerTest instance;
 
+    public bool mirrorDebug;
     public TransportType transportType;
 
     private new void Awake()
     {
-        
+        instance = this;
+
         //KCP variables
         NetworkManagerHUD hud = GetComponent<NetworkManagerHUD>();
         KcpTransport kcp = GetComponent<KcpTransport>();
@@ -58,7 +60,7 @@ public class NetworkManagerTest : NetworkManager
         {
             startPositions.Add(startPositionsParent.GetChild(i));
         }
-        instance = this;
+        
     }
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
@@ -71,8 +73,6 @@ public class NetworkManagerTest : NetworkManager
         var player = Instantiate(playerPrefab, start.position, start.rotation);
         
         NetworkServer.AddPlayerForConnection(conn, player);
-        print("adding player");
-
     }
     public override void OnStartClient()
     {

@@ -46,7 +46,7 @@ public class DanePlayerController : NetworkBehaviour
             }
             Destroy(GetComponentInChildren<AudioListener>());
             Canvas canvas = GetComponentInChildren<Canvas>();
-            Destroy(canvas);
+            Destroy(canvas.gameObject);
         }
         
         color = colors[Random.Range(0, colors.Count)];
