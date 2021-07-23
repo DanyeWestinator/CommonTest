@@ -28,7 +28,7 @@ public class SteamManager : MonoBehaviour {
 	protected static SteamManager Instance {
 		get {
 			if (s_instance == null) {
-				return new GameObject("SteamManager").AddComponent<SteamManager>();
+				return new GameObject("SteamManagerGenerated").AddComponent<SteamManager>();
 			}
 			else {
 				return s_instance;
@@ -61,7 +61,7 @@ public class SteamManager : MonoBehaviour {
 #endif
 
 	protected virtual void Awake() {
-		// Only one instance of SteamManager at a time!
+        // Only one instance of SteamManager at a time!
 		if (s_instance != null) {
 			Destroy(gameObject);
 			return;

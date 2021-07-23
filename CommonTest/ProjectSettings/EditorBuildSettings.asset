@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: eb32bb6b75f7ac540adf3378eca6c389
+  - enabled: 1
     path: Assets/Scenes/Dane_test_scene.unity
     guid: 296879406acaef34798b24a38491091f
   - enabled: 0
@@ -15,12 +18,12 @@ EditorBuildSettings:
     path: Assets/Mirror/Examples/Pong/Scenes/Scene.unity
     guid: 89a84548859e3b643b4fb27984dc2b0d
   - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
     path: Assets/Mirror/Examples/Tanks/Scenes/Scene.unity
     guid: 83f9d2fb76f5742448c6e51f258327a2
   - enabled: 0
     path: Assets/Mirror/Examples/Benchmark/Scenes/Scene.unity
     guid: 3b956c7d68b6144dd8e6c36636e25b52
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

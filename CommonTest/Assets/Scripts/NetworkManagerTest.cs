@@ -73,7 +73,15 @@ public class NetworkManagerTest : NetworkManager
             start = GetStartPosition();
         }
         usedStarts.Add(start);
-        var player = Instantiate(playerPrefab, start.position, start.rotation);
+        GameObject player;
+        try
+        {
+            player = Instantiate(playerPrefab, start.position, start.rotation);
+        }
+        catch (System.NullReferenceException e)
+        {
+            player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        }
         
         NetworkServer.AddPlayerForConnection(conn, player);
     }

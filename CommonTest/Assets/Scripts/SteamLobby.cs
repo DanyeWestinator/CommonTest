@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class SteamLobby : MonoBehaviour
 {
     [Header("UI Elements")]
+    #region
+    
     
     public GameObject startButton;
     /// <summary>
@@ -32,8 +34,9 @@ public class SteamLobby : MonoBehaviour
     /// the parent GameObject of the player count slider 
     /// </summary>
     public GameObject playerCountSlider;
+    #endregion
 
-
+    #region
     [Header("Internal variables")]
     [SerializeField]
     private NetworkManagerTest netManager;
@@ -41,7 +44,8 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
-
+    protected Callback<LobbyInvite_t> lobbyInvited;
+    #endregion
 
     //Internal variables
     public static SteamLobby instance;
@@ -75,6 +79,7 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+        lobbyInvited = Callback<LobbyInvite_t>.Create(OnLobbyInvited);
         friendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagAll);
     }
 
@@ -100,9 +105,12 @@ public class SteamLobby : MonoBehaviour
             FriendsListScrollView.SetActive(true);
         }
         playerCountSlider.SetActive(false);
-        print(netManager != null);
-        netManager.gameObject.SetActive(true);
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, playerCount);
+    }
+
+    void OnLobbyInvited(LobbyInvite_t callback)
+    {
+        print("Invited to lobby!");
     }
 
     void OnLobbyCreated(LobbyCreated_t callback)
@@ -131,8 +139,9 @@ public class SteamLobby : MonoBehaviour
             new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey);
         netManager.networkAddress = hostAddress;
-        netManager.StartClient();
+        //netManager.StartClient();
         startButton.SetActive(false);
+        print("lobby entered");
 
     }
 }
