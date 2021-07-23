@@ -142,5 +142,6 @@ public class FriendManager : MonoBehaviour
     {
         SteamFriends.InviteUserToGame(currentFriend.id, "Join game?");
         print($"Invited {currentFriend.name} to game");
+        SteamLobby.WriteToConsole($"Invited {currentFriend.name} to game");
     }
 }

@@ -34,6 +34,11 @@ public class SteamLobby : MonoBehaviour
     /// the parent GameObject of the player count slider 
     /// </summary>
     public GameObject playerCountSlider;
+
+    /// <summary>
+    /// the text component for displaying messages ingame
+    /// </summary>
+    public Text inGameConsole;
     #endregion
 
     #region
@@ -106,11 +111,22 @@ public class SteamLobby : MonoBehaviour
         }
         playerCountSlider.SetActive(false);
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, playerCount);
+        WriteToConsole("Hosted lobby");
+
+    }
+
+    public static void WriteToConsole(string s)
+    {
+        Text console = instance.inGameConsole;
+        if (console.text != "")
+            console.text += "\n";
+        instance.inGameConsole.text += s;
     }
 
     void OnLobbyInvited(LobbyInvite_t callback)
     {
         print("Invited to lobby!");
+        WriteToConsole($"Invited to lobby by {callback.m_ulSteamIDUser}");
     }
 
     void OnLobbyCreated(LobbyCreated_t callback)
