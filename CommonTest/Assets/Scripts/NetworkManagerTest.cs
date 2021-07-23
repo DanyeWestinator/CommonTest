@@ -24,7 +24,6 @@ public class NetworkManagerTest : NetworkManager
     private new void Awake()
     {
         instance = this;
-        print("instance is this");
         //KCP variables
         NetworkManagerHUD hud = GetComponent<NetworkManagerHUD>();
         KcpTransport kcp = GetComponent<KcpTransport>();
@@ -37,16 +36,24 @@ public class NetworkManagerTest : NetworkManager
         bool steam = (transportType == TransportType.steam);
 
         //set the kcp to the inverse of steam
-        hud.enabled = !steam;
-        kcp.enabled = !steam;
+        if (hud != null && kcp != null)
+        {
+            hud.enabled = !steam;
+            kcp.enabled = !steam;
+        }
+        if (sm != null && lobby != null && fizzy != null)
+        {
+            sm.enabled = steam;
+            lobby.enabled = steam;
+            fizzy.enabled = steam;
+        }
+        
 
-        sm.enabled = steam;
-        lobby.enabled = steam;
-        fizzy.enabled = steam;
+        
 
         //disables the steam button if using KCP
-        GetComponentInChildren<Canvas>().gameObject.SetActive(steam);
-        if (steam)
+        //GetComponentInChildren<Canvas>().gameObject.SetActive(steam);
+        if (steam && fizzy != null)
             transport = fizzy;
         else
             transport = kcp;
@@ -56,10 +63,6 @@ public class NetworkManagerTest : NetworkManager
     private new void Start()
     {
         base.Start();
-        for (var i = 0; i < startPositionsParent.childCount; i++)
-        {
-            startPositions.Add(startPositionsParent.GetChild(i));
-        }
         
     }
     public override void OnServerAddPlayer(NetworkConnection conn)
@@ -77,5 +80,10 @@ public class NetworkManagerTest : NetworkManager
     public override void OnStartClient()
     {
         
+    }
+    private new void OnDestroy()
+    {
+        Debug.Log(UnityEngine.StackTraceUtility.ExtractStackTrace().ToString());
+        base.OnDestroy();
     }
 }

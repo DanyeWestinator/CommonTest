@@ -45,6 +45,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Extensions
         
         [SerializeField] private Animator _animator = null;
+        public bool HasControl = true;
 
         // Use this for initialization
         private void Start()
@@ -64,7 +65,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if(!isLocalPlayer) return;
+            if(!isLocalPlayer || HasControl == false) return;
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
