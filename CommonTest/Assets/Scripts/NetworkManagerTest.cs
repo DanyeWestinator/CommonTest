@@ -73,6 +73,7 @@ public class NetworkManagerTest : NetworkManager
         var player = Instantiate(playerPrefab, start.position, start.rotation);
         
         NetworkServer.AddPlayerForConnection(conn, player);
+        print("added player");
     }
     public override void OnStartClient()
     {

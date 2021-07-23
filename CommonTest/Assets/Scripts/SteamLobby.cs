@@ -42,6 +42,7 @@ public class SteamLobby : MonoBehaviour
         startButton.SetActive(false);
 
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, 3);
+        print("Hosted lobby");
     }
 
     void OnLobbyCreated(LobbyCreated_t callback)
@@ -51,21 +52,25 @@ public class SteamLobby : MonoBehaviour
             startButton.SetActive(true);
             return;
         }
+        print("Lobby started creating");
         netManager.StartHost();
         //https://youtu.be/QlbBC07dqnE?t=644
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey, 
             SteamUser.GetSteamID().ToString());
+        print("Lobby created");
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
     {
+        print("Game lobby join requested");
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
         if (NetworkServer.active)
             return;
+        print("Lobby entered");
         string hostAddress = SteamMatchmaking.GetLobbyData(
             new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey);
