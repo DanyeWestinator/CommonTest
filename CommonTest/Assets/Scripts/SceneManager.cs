@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Steamworks;
+using Mirror;
+using Mirror.FizzySteam;
 
 public class SceneManager : MonoBehaviour
 {
@@ -30,6 +33,7 @@ public class SceneManager : MonoBehaviour
     }
     public void JoinGame()
     {
+        SteamFriends.ActivateGameOverlayInviteDialogConnectString("Test this");
         print("Joined Game");
     }
 }
