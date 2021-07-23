@@ -82,7 +82,7 @@ public class NetworkManagerTest : NetworkManager
         {
             player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
         }
-        
+        SteamLobby.WriteToConsole("Added player to server");
         NetworkServer.AddPlayerForConnection(conn, player);
     }
     public override void OnStartClient()

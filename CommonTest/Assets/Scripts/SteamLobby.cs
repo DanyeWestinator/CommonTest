@@ -120,17 +120,18 @@ public class SteamLobby : MonoBehaviour
         Text console = instance.inGameConsole;
         if (console.text != "")
             console.text += "\n";
+        s += $" {Time.realtimeSinceStartup}";
         instance.inGameConsole.text += s;
     }
 
     void OnLobbyInvited(LobbyInvite_t callback)
     {
-        print("Invited to lobby!");
         WriteToConsole($"Invited to lobby by {callback.m_ulSteamIDUser}");
     }
 
     void OnLobbyCreated(LobbyCreated_t callback)
     {
+        WriteToConsole("Started to create lobby");
         if (callback.m_eResult != EResult.k_EResultOK)
         {
             startButton.SetActive(true);
@@ -141,23 +142,26 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey, 
             SteamUser.GetSteamID().ToString());
+        WriteToConsole("Lobby created");
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
     {
+        WriteToConsole("Requested to join lobby");
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
         if (NetworkServer.active)
             return;
+        WriteToConsole("Started entering lobby");
         string hostAddress = SteamMatchmaking.GetLobbyData(
             new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey);
         netManager.networkAddress = hostAddress;
         //netManager.StartClient();
         startButton.SetActive(false);
-        print("lobby entered");
+        WriteToConsole("Lobby entered");
 
     }
 }
