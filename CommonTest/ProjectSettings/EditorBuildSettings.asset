@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dane_test_scene.unity
     guid: 296879406acaef34798b24a38491091f
+  - enabled: 1
+    path: Assets/Scenes/OfflineScene.unity
+    guid: e162cbacd38c3e149a93ec93f7176ba0
   - enabled: 0
     path: Assets/Scenes/PongScene.unity
     guid: a69f69f48dc79454aa962b806b9fbd79

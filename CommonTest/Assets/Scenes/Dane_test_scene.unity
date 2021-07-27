@@ -401,7 +401,7 @@ MonoBehaviour:
   serverTickRate: 30
   serverBatching: 1
   serverBatchInterval: 0
-  offlineScene: 
+  offlineScene: Assets/Scenes/OfflineScene.unity
   onlineScene: 
   transport: {fileID: 431195395}
   networkAddress: localhost
