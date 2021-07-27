@@ -34,7 +34,7 @@ public class EmptyPlayer : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-
+            //SteamFriends
         }
     }
 }

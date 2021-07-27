@@ -12,6 +12,11 @@ public class PC2 : NetworkBehaviour
     public float turnSpeed = 5f;
     private Camera _camera;
     private bool local => GetComponentInParent<EmptyPlayer>().isLocalPlayer;
+    public string goName;
+
+    [SyncVar(hook = nameof(SyncName))]
+    private string _name;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +46,12 @@ public class PC2 : NetworkBehaviour
             Vector3 pos = transform.localPosition;
             pos.z += (Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
             transform.localPosition = pos;
+            
         }
+    }
+
+    void SyncName(string old, string name)
+    {
+        gameObject.name = name;
     }
 }
