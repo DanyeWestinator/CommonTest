@@ -75,8 +75,10 @@ public class NetworkManagerTest : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player);
         print("added player");
     }
-    public override void OnStartClient()
+    public override void OnStartHost()
     {
-        
+        base.OnStartHost();
+        print("host started");
     }
+    
 }

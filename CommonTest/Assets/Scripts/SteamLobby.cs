@@ -8,12 +8,15 @@ public class SteamLobby : MonoBehaviour
 {
     [SerializeField]
     private GameObject startButton;
+    [SerializeField]
+    private GameObject joinButton;
 
     private NetworkManagerTest netManager;
 
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
+    private CSteamID lobbyID;
 
     private const string hostAddressKey = "HostAddress";
 
@@ -44,6 +47,11 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, 3);
         print("Hosted lobby");
     }
+    public void JoinLobby()
+    {
+        SteamMatchmaking.JoinLobby(lobbyID);
+        print("Joined lobby");
+    }
 
     void OnLobbyCreated(LobbyCreated_t callback)
     {
@@ -54,6 +62,9 @@ public class SteamLobby : MonoBehaviour
         }
         print("Lobby started creating");
         netManager.StartHost();
+        //netManager.StartServer();
+        lobbyID = new CSteamID(callback.m_ulSteamIDLobby);
+        joinButton.SetActive(true);
         //https://youtu.be/QlbBC07dqnE?t=644
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey, 
@@ -68,6 +79,7 @@ public class SteamLobby : MonoBehaviour
     }
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
+        print("tried to enter lobby");
         if (NetworkServer.active)
             return;
         print("Lobby entered");
