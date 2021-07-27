@@ -39,6 +39,12 @@ public class SteamLobby : MonoBehaviour
     /// the text component for displaying messages ingame
     /// </summary>
     public Text inGameConsole;
+
+    /// <summary>
+    /// The text component for the global console, that is reflected across all clients
+    /// </summary>
+    public Text globalConsole;
+
     #endregion
 
     #region
@@ -50,6 +56,8 @@ public class SteamLobby : MonoBehaviour
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
     protected Callback<LobbyInvite_t> lobbyInvited;
+
+    
     #endregion
 
     //Internal variables
@@ -86,6 +94,10 @@ public class SteamLobby : MonoBehaviour
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
         lobbyInvited = Callback<LobbyInvite_t>.Create(OnLobbyInvited);
         friendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagAll);
+
+        //initialize the player count slider variables
+        playerCount = (int)playerCountSlider.GetComponentInChildren<Slider>().value;
+        SetPlayerCountText(playerCount);
     }
 
     private void Update()
@@ -123,6 +135,8 @@ public class SteamLobby : MonoBehaviour
         s += $" {Time.realtimeSinceStartup}";
         instance.inGameConsole.text += s;
     }
+
+    
 
     void OnLobbyInvited(LobbyInvite_t callback)
     {
