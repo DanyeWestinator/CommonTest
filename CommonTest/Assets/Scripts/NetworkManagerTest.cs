@@ -3,6 +3,7 @@ using UnityEngine;
 using Mirror;
 using Mirror.FizzySteam;
 using kcp2k;
+using Steamworks;
 
 public enum TransportType
 {
@@ -78,7 +79,13 @@ public class NetworkManagerTest : NetworkManager
     public override void OnStartHost()
     {
         base.OnStartHost();
-        print("host started");
+        SteamFriends.SetRichPresence("status", "Hosting a Common'Test game");
     }
-    
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        SteamFriends.SetRichPresence("status", "Playing a Common'Test lobby");
+    }
+
+
 }
