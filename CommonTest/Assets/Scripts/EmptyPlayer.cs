@@ -10,14 +10,17 @@ public class EmptyPlayer : NetworkBehaviour
     public GameObject playerChild;
     public GameObject startButton;
 
+    [SyncVar(hook = nameof(SyncName))]
+    string _name;
+
     public override void OnStartClient()
     {
         base.OnStartClient();
         if (isLocalPlayer)
         {
             id = SteamUser.GetSteamID();
-            string name = SteamFriends.GetPersonaName();
-            gameObject.name = name;
+            _name = SteamFriends.GetPersonaName();
+            gameObject.name = _name;
         }
         playerChild.SetActive(false);
         print($"started empty player as local: {isLocalPlayer}");
@@ -36,5 +39,11 @@ public class EmptyPlayer : NetworkBehaviour
         {
             //SteamFriends
         }
+    }
+
+    void SyncName(string old, string name)
+    {
+        print("synced name");
+        gameObject.name = name;
     }
 }
