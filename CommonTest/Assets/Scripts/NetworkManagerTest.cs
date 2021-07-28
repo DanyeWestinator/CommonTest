@@ -85,6 +85,7 @@ public class NetworkManagerTest : NetworkManager
     {
         base.OnStartClient();
         SteamFriends.SetRichPresence("status", "Playing a Common'Test lobby");
+        SteamFriends.SetRichPresence("steam_display", "Testing some things in Common'Test!");
     }
 
 
