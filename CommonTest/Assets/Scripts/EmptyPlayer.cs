@@ -21,8 +21,14 @@ public class EmptyPlayer : NetworkBehaviour
             id = SteamUser.GetSteamID();
             _name = SteamFriends.GetPersonaName();
             gameObject.name = _name;
+            playerChild.SetActive(false);
         }
-        playerChild.SetActive(false);
+        else
+        {
+            startButton.SetActive(false);
+            playerChild.SetActive(true);
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+        }
         print($"started empty player as local: {isLocalPlayer}");
     }
     public void StartGame()
