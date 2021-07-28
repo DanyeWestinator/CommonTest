@@ -62,10 +62,7 @@ public class SteamLobby : MonoBehaviour
         }
         print("Lobby started creating");
         netManager.StartHost();
-        //netManager.StartServer();
         lobbyID = new CSteamID(callback.m_ulSteamIDLobby);
-        //joinButton.SetActive(true);
-        //https://youtu.be/QlbBC07dqnE?t=644
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby),
             hostAddressKey, 
             SteamUser.GetSteamID().ToString());

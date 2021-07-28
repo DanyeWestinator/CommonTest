@@ -29,6 +29,11 @@ public class EmptyPlayer : NetworkBehaviour
             playerChild.SetActive(true);
             Destroy(GetComponentInChildren<Camera>().gameObject);
         }
+
+        if (isLocalPlayer && NetworkServer.active == false)
+        {
+
+        }
         print($"started empty player as local: {isLocalPlayer}");
     }
     public void StartGame()
